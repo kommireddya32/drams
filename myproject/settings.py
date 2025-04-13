@@ -10,7 +10,7 @@ SECRET_KEY = "django-insecure-2z%o%8=$v*arvob#@ov4i2q*zrc_)tagwh=&*(fl2$owi++==+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
