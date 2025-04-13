@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Metabolic Syndrome Prediction</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/02.jpeg' %}");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .logout-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .logout-container .logout-button {
+            background-color: #dc3545 !important;
+            color: white !important;
+            border: none;
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-container .logout-button:hover {
+            background-color: #c82333 !important;
+        }
+
+        .form-container {
+            width: 420px;
+            max-height: 550px;
+            overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px 25px 35px 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 9px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-container button[type="submit"] {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </div>
+
+    <!-- Patient Form -->
+    <div class="form-container">
+        <h2>Enter Patient Details</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="name">Patient Name:</label>
+            <input type="text" name="name" id="name" required>
+
+            <label for="age">Age:</label>
+            <input type="number" name="age" id="age" required>
+
+            <label for="sex">Sex:</label>
+            <select name="sex" id="sex" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <label for="waist">Waist Circumference:</label>
+            <input type="number" name="waist" id="waist" required>
+
+            <label for="bmi">BMI:</label>
+            <input type="number" step="0.1" name="bmi" id="bmi" required>
+
+            <label for="albuminuria">Albuminuria:</label>
+            <input type="number" name="albuminuria" id="albuminuria" required>
+
+            <label for="urine_ratio">Urine Albumin-to-Creatinine Ratio:</label>
+            <input type="number" step="0.01" name="urine_ratio" id="urine_ratio" required>
+
+            <label for="uric_acid">Uric Acid:</label>
+            <input type="number" step="0.1" name="uric_acid" id="uric_acid" required>
+
+            <label for="glucose">Blood Glucose:</label>
+            <input type="number" name="glucose" id="glucose" required>
+
+            <label for="hdl">HDL Cholesterol:</label>
+            <input type="number" name="hdl" id="hdl" required>
+
+            <label for="triglycerides">Triglycerides:</label>
+            <input type="number" name="triglycerides" id="triglycerides" required>
+
+            <label for="model">Select Model:</label>
+            <select name="model" id="model" required>
+                <option value="SVM">SVM</option>
+                <option value="RandomForest">Random Forest</option>
+                <option value="XGBoost">XGBoost</option>
+            </select>
+
+            <button type="submit">Predict</button>
+        </form>
+    </div>
+
+</body>
+</html>

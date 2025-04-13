@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'images/02.jpeg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            color: #333;
+        }
+
+        /* Logout button styling */
+        .logout-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Main report container styling */
+        .report-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px; /* Decreased width from 600px to 500px */
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+            font-size: 16px;
+            overflow-x: hidden; /* Hide overflow horizontally */
+        }
+
+        .report-container h2 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .report-container h3 {
+            color: #555;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 16px;
+            table-layout: fixed; /* Ensures the table doesn't overflow */
+        }
+
+        td, th {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd; /* Added borders to each cell */
+            word-wrap: break-word; /* Ensures content stays within the cell */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Print button styling */
+        .print-button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .print-button:hover {
+            background-color: #218838;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .report-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .logout-button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .print-button {
+                font-size: 14px;
+                padding: 10px 18px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .logout-container {
+                display: none; /* Hide logout button in print */
+            }
+
+            .report-container {
+                width: 500px !important; /* Fixed width for print */
+                padding: 15px;
+                box-shadow: none;
+                transform: none;
+                position: static;
+                text-align: left;
+                font-size: 12px;
+                page-break-before: always;
+            }
+
+            table {
+                width: 100%;
+                margin-bottom: 10px;
+                font-size: 12px; /* Adjust font size for printing */
+            }
+
+            td, th {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ccc; /* Added borders for print */
+            }
+
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            td strong {
+                color: #555;
+            }
+
+            /* Prevent page breaks within the report */
+            .report-container, table, td {
+                page-break-inside: avoid;
+            }
+
+            /* Control overall page breaks */
+            .report-container {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    <!-- Prediction Report Container -->
+    <div class="report-container">
+        <h2>Prediction Report</h2>
+
+        <!-- Display Patient Name -->
+        {% if report_data.Patient_Name %}
+            <h3>Patient: {{ report_data.Patient_Name }}</h3>
+        {% endif %}
+
+        <!-- Report Data Table -->
+        <table>
+            <tbody>
+                {% for key, value in report_data.items %}
+                    {% if key != 'Patient_Name' %}
+                        <tr>
+                            <td><strong>{{ key }}</strong></td>
+                            <td>{{ value }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Print Report Button -->
+        <button class="print-button" onclick="window.print()">Print Report</button>
+    </div>
+
+</body>
+</html>

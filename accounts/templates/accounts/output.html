@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'images/03.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            position: relative;
+        }
+
+        .logout-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        .result-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+        }
+
+        .result-container h2 {
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .result-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: green;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .custom-button {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 14px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logout Button -->
+    <div class="logout-container">
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    <!-- Result Display -->
+    <div class="result-container">
+        <h2>Prediction Result</h2>
+
+        {% if prediction == "Metabolic Syndrome Detected" %}
+            <p class="result-text">⚠️ Metabolic Syndrome Detected</p>
+        {% elif prediction == "No Metabolic Syndrome" %}
+            <p class="result-text">✅ No Metabolic Syndrome</p>
+        {% else %}
+            <p class="result-text">{{ prediction }}</p>
+        {% endif %}
+
+        <!-- Buttons: Enter Again & View Report -->
+        <div class="btn-container">
+            <form method="get" action="{% url 'input' %}">
+                <button type="submit" class="custom-button">Enter Again</button>
+            </form>
+            <form method="get" action="{% url 'report' %}">
+                <button type="submit" class="custom-button">View Report</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
